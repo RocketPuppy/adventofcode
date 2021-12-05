@@ -1,9 +1,12 @@
-module Day1 where
+module Main where
 
 import Debug.Trace
 
+import Prelude hiding (sum, (<$))
+import Control.Applicative (liftA2)
+
 -- Define reverse function application to make things neater
-import Prelude hiding ((<$))
+-- Normal function aoolication is $
 a <$ f = f a
 
 -- Here's a catamorphism. It's basically a universal fold.
@@ -30,14 +33,36 @@ ping i s = Iso $ Ping i s
 
 -- Here's the operation for algebra. A different operation would give a different algebra.
 -- It transforms pings into a running rate with the last ping.
+-- The variables d, d' are the first and second depths, respectively
 depthRate :: (Ord a, Num a) => Algebra (SonarScan a) (a, a)
 depthRate (InitialPing d) = (0, d)
 depthRate (Ping d' (i, d)) = if d' > d then (1 + i, d') else (i, d')
 
-pings = initialPing 199 <$ ping 200 <$ ping 208 <$ ping 210 <$ ping 200 <$ ping 207 <$ ping 240 <$ ping 269 <$ ping 260 <$ ping 263
-sol = fst . cata depthRate
+-- Some helpers for working with a window
+type Window a = (Maybe a, Maybe a, Maybe a)
+rotate d (c, b, a) = (Just d, c, b)
+initialWindow d = rotate d emptyWindow
+emptyWindow = (Nothing, Nothing, Nothing)
+-- liftA2 is fmap for functions with two args
+sum (a,b,c) = liftA2 (+) a $ (liftA2 (+) b c)
+cmp w w' = maybe False id $ liftA2 (>) (sum w) (sum w')
 
-pings' = initialPing 134 <$
+depthRate2 :: (Ord a, Num a) => Algebra (SonarScan a) (a, Window a)
+depthRate2 (InitialPing d) = (0, initialWindow d)
+depthRate2 (Ping d' (i, w)) = if cmp w' w then (1+i, w') else (i, w')
+    where w' = rotate d' w
+
+solve = fst . cata depthRate
+solve2 = fst . cata depthRate2
+
+main = do
+    putStr "Part 1: "
+    putStrLn (show (solve input))
+    putStr "Part 2: "
+    putStrLn (show (solve2 input))
+
+sample = initialPing 199 <$ ping 200 <$ ping 208 <$ ping 210 <$ ping 200 <$ ping 207 <$ ping 240 <$ ping 269 <$ ping 260 <$ ping 263
+input = initialPing 134 <$
     ping 138 <$
     ping 142 <$
     ping 143 <$
