@@ -1,0 +1,9 @@
+layout toplevel ;
+
+separator Command ";" ;
+
+Command. Command ::= Direction Distance ;
+Up. Direction ::= "up" ;
+Down. Direction ::= "down" ;
+Forward. Direction ::= "forward" ;
+Distance. Distance ::= Integer ;
