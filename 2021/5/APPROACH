@@ -1,0 +1,26 @@
+There are line segments identified by their endpoints.
+
+Part 1:
+Considering horizontal and vertical lines.
+Find the number of points where two lines overlap.
+
+This looks like a line intersection problem.
+There are formulas for this, but it might be easier to do an algorithmic approach.
+Most of the efficient algorithms are "sweep line" style.
+
+hmatrix, hgeometry
+
+1. order points by X-coord
+2. Gather horizontal and vertical lines
+    a. Sweep from left to right on the X axis
+    b. Events
+        - New line segment
+            - Remember y position
+            - overlap
+                - continue to end of overlap, skipping other lines
+                - count distance
+        - intersection
+            - count
+
+Alternate approach
+- Decompose line segments into grid points. Find all instances of multiple grid points.
