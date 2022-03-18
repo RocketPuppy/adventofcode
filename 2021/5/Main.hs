@@ -27,8 +27,6 @@ main = do
     -- Consume the maybe and exit if it's Nothing
     (Parser.Parsed segments) <- maybe exitFailure pure parsed'
     let s1 = solve1 segments
-    putStr "Solve1: "
     print s1
     let s2 = solve2 segments
-    putStr "Solve2: "
     print s2

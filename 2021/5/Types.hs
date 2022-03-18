@@ -13,5 +13,3 @@ getY2 = getY . get2
 
 horizontal seg = getY1 seg == getY2 seg
 vertical seg = getX1 seg == getX2 seg
-
-isPoint seg = getX1 seg == getX2 seg && getY1 seg == getY2 seg

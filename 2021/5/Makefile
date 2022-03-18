@@ -14,5 +14,5 @@ clean:
 	rm *.o
 	rm *.hi
 
-Main: Main.hs Parser.hs Lexer.hs
+Main: Main.hs Parser.hs Lexer.hs Solve1.hs Solve2.hs Types.hs
 	ghc -O Main
